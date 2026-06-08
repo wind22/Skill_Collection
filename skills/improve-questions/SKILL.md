@@ -1,6 +1,6 @@
 ---
 name: improve-questions
-description: Optimize vague, shallow, broad, emotional, or yes/no questions into clearer, deeper, more discussion-worthy questions. Use when the user asks to improve, deepen, sharpen, audit, score, reframe, or make a question more meaningful; when they ask whether a question is good, deep, effective, or worth discussing; or when they need better questions for AI prompts, essays, content, interviews, research, learning, decisions, strategy, or self-reflection.
+description: Optimize vague, shallow, broad, emotional, or yes/no questions into clearer, deeper, more discussion-worthy questions, then suggest useful next ways to keep using the skill. Use when the user asks to improve, deepen, sharpen, audit, score, reframe, or make a question more meaningful; when they ask whether a question is good, deep, effective, or worth discussing; or when they need better questions for AI prompts, essays, content, interviews, research, learning, decisions, strategy, or self-reflection.
 ---
 
 # Improve Questions
@@ -11,6 +11,20 @@ Help the user turn a weak question into a clearer, deeper, and more actionable q
 
 Use the user's original language by default. Preserve their intent and voice, but remove vagueness, hidden assumptions, and empty abstraction.
 
+## Response Contract
+
+Every response using this skill must end with this exact footer section:
+
+```markdown
+你还可以继续这样用：
+- ...
+- ...
+```
+
+Do not omit this footer after long answers, full audits, direct rewrites, or question-generation responses. Omit it only if the user explicitly says not to include next-use suggestions.
+
+The footer is part of the required output, not an optional extra. Before finishing, check that the final answer contains `你还可以继续这样用：`.
+
 ## Core Workflow
 
 1. Identify what the user is really trying to understand.
@@ -19,6 +33,7 @@ Use the user's original language by default. Preserve their intent and voice, bu
 4. Rewrite the question at multiple depths.
 5. Offer follow-up prompts that help the user continue thinking.
 6. Convert the improved question into an action, decision, or learning direction when possible.
+7. End with two or three further-use suggestions tailored to the user's current question.
 
 If the user's goal is ambiguous, make a reasonable assumption and state it briefly. Ask at most one clarifying question only when the rewrite would change substantially depending on the answer.
 
@@ -96,6 +111,10 @@ Use this when the user simply asks to optimize a question.
 
 最值得继续追问的是：
 ...
+
+你还可以继续这样用：
+- ...
+- ...
 ```
 
 ### Full Audit
@@ -120,6 +139,10 @@ Use this when the user asks for a detailed check, rating, or diagnosis.
 
 下一步可以问：
 ...
+
+你还可以继续这样用：
+- ...
+- ...
 ```
 
 ### Question Generation
@@ -137,7 +160,33 @@ Use this when the user provides a topic rather than an existing question.
 
 我建议优先讨论的问题是：
 ...
+
+你还可以继续这样用：
+- ...
+- ...
 ```
+
+## Further-Use Suggestions
+
+After the main answer, include a short section named `你还可以继续这样用：`.
+
+Suggest two or three next uses based on what would most improve the user's current question. Each suggestion should be directly usable as a prompt. Do not list every possible use.
+
+Map the recommendation to the observed weakness:
+
+| If the current question needs... | Suggest this next use |
+| --- | --- |
+| more precision | `继续帮我把这个问题限定到具体对象、场景和时间尺度。` |
+| assumption testing | `帮我拆出这个问题的隐藏前提，并判断哪些前提最可疑。` |
+| reverse thinking | `把这个问题反过来问，找出我忽略的反例和盲区。` |
+| scoring | `按十项清单给这个问题打分，并告诉我最低分怎么补。` |
+| concrete grounding | `给这个问题配 3 个现实场景和 1 个反例。` |
+| mechanism analysis | `不要回答结论，先分析这个问题背后的发生机制。` |
+| value conflict | `帮我找出这个问题背后的价值冲突，比如效率、自由、成长、风险。` |
+| action orientation | `如果这个问题的判断成立，帮我推导下一步行动原则。` |
+| content or research use | `围绕这个主题再生成 10 个更适合写文章/访谈/研究的问题。` |
+
+Keep suggestions concise. Prefer prompts that start with action verbs such as `帮我拆`, `继续限定`, `反过来问`, `按十项清单打分`, `生成`, or `推导`.
 
 ## Heuristics
 
