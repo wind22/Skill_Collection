@@ -1,0 +1,4 @@
+interface:
+  display_name: "Improve Questions"
+  short_description: "Turn shallow prompts into deeper questions"
+  default_prompt: "Use $improve-questions to assess and improve this question: ..."
